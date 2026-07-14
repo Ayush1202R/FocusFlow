@@ -1,0 +1,25 @@
+# OS files
+Thumbs.db
+db.properties
+.DS_Store
+
+# Editor configurations
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Build / node directories (if added later)
+node_modules/
+dist/
+build/

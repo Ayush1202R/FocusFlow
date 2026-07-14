@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusFlow — New Tab</title>
+  <meta name="description" content="Your personal productivity dashboard. Stay focused, manage tasks, and own your day." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ── Wallpaper Layer ── -->
+  <div id="wallpaper-layer" class="wallpaper-layer"></div>
+  <div class="wallpaper-overlay"></div>
+
+  <!-- ── Onboarding Modal (First Launch) ── -->
+  <div id="onboarding-modal" class="modal-backdrop hidden">
+    <div class="glass-card onboarding-card">
+      <h1 class="onboarding-title">Welcome to <span class="brand-gradient">FocusFlow</span></h1>
+      <p class="onboarding-subtitle">Let's personalize your productivity dashboard.</p>
+
+      <div class="form-group">
+        <label for="onboarding-name" class="form-label">What's your name?</label>
+        <input type="text" id="onboarding-name" class="form-input" placeholder="Enter your name" autocomplete="off" autofocus />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Choose a wallpaper <span class="optional-tag">(optional)</span></label>
+        <div id="wallpaper-drop-zone" class="drop-zone">
+          <div class="drop-zone__content">
+            <svg class="drop-zone__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <p>Drag &amp; drop an image or <span class="drop-zone__browse">browse</span></p>
+          </div>
+          <input type="file" id="wallpaper-input" class="drop-zone__input" accept="image/*" />
+        </div>
+        <div id="wallpaper-preview-container" class="wallpaper-preview hidden">
+          <img id="wallpaper-preview-img" class="wallpaper-preview__img" alt="Wallpaper preview" />
+          <button id="wallpaper-remove-btn" class="btn btn--icon btn--danger" title="Remove wallpaper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <button id="onboarding-save-btn" class="btn btn--primary btn--lg" disabled>
+        Let's Go
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Main Dashboard ── -->
+  <main id="dashboard" class="dashboard hidden">
+
+    <!-- ── Reminder Banner (Phase 4) ── -->
+    <div id="reminder-banner" class="reminder-banner hidden">
+      <div class="reminder-banner__body">
+        <span id="reminder-msg" class="reminder-banner__msg"></span>
+        <span id="reminder-next" class="reminder-banner__next hidden"></span>
+      </div>
+      <button id="reminder-close" class="reminder-banner__close" aria-label="Dismiss reminder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- ── Top Controls ── -->
+    <div class="dashboard__top-bar">
+      <!-- Focus Mode Toggle (Phase 5) -->
+      <label class="focus-toggle-wrapper" title="Toggle Focus Mode">
+        <input type="checkbox" id="focus-toggle" class="focus-toggle__input" />
+        <span class="focus-toggle__slider"></span>
+        <span id="focus-toggle-label" class="focus-toggle__label">Focus OFF</span>
+      </label>
+
+      <!-- Settings (Phase 6) -->
+      <button id="settings-btn" class="settings-trigger" title="Settings" aria-label="Open settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.32 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ── Center Content ── -->
+    <section class="dashboard__center">
+      <time id="clock" class="clock" aria-live="polite"></time>
+      <p id="date-display" class="date-display"></p>
+      <h1 id="greeting" class="greeting"></h1>
+
+
+
+      <!-- ── Current Active Task (Phase 7) ── -->
+      <div id="current-task-section" class="current-task-section hidden">
+        <div class="current-task-display">
+          <span class="current-task-display__label">Active Task</span>
+          <p id="current-task-title" class="current-task-display__text"></p>
+          <span id="current-task-time" class="current-task-display__time"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Task Manager Panel (Phase 3) ── -->
+    <aside id="task-panel" class="task-panel glass-card">
+      <!-- ── Study Timer Panel (Phase 8) ── -->
+      <div class="study-timer">
+        <div class="study-timer__header">
+          <span class="study-timer__label">Active Study Time</span>
+          <div id="study-timer-display" class="study-timer__display">00.00.00</div>
+        </div>
+
+        <div class="study-timer__controls">
+          <button id="study-timer-toggle" class="btn btn--primary btn--sm study-timer__btn">
+            <svg id="study-timer-toggle-icon" class="study-timer__icon" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <span id="study-timer-toggle-text">Start</span>
+          </button>
+        </div>
+
+        <div class="study-timer__log-input-row">
+          <input type="text" id="study-timer-desc" class="form-input study-timer__input" placeholder="Session description..." autocomplete="off" />
+          <button id="study-timer-log-btn" class="btn btn--secondary btn--sm">Log</button>
+        </div>
+
+        <div id="study-queue-container" class="study-queue-container hidden">
+          <span class="study-timer__queue-label">Session Log Queue</span>
+          <div id="study-timer-queue" class="study-timer-queue"></div>
+        </div>
+      </div>
+      <hr class="study-timer-divider" />
+
+      <div class="task-panel__header">
+        <h2 class="task-panel__title">Today's Tasks</h2>
+        <button id="add-task-btn" class="btn btn--primary btn--sm" aria-label="Add new task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add
+        </button>
+      </div>
+      <div id="task-empty-state" class="task-empty">
+        <svg class="task-empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <p>No tasks yet.<br/>Plan your day!</p>
+      </div>
+      <div id="task-list" class="task-list"></div>
+    </aside>
+
+
+
+  </main>
+
+  <!-- ── Task Add/Edit Modal (Phase 3) ── -->
+  <div id="task-modal" class="modal-backdrop hidden">
+    <div class="glass-card task-modal-card">
+      <h2 id="task-modal-title" class="task-modal__title">New Task</h2>
+      <form id="task-modal-form" class="task-modal__form" autocomplete="off">
+        <div class="form-group">
+          <label for="task-title-input" class="form-label">Task Title</label>
+          <input type="text" id="task-title-input" class="form-input" placeholder="Enter task title" required maxlength="80" />
+        </div>
+        <div class="form-group">
+          <label for="task-desc-input" class="form-label">Description <span class="optional-tag">(optional)</span></label>
+          <input type="text" id="task-desc-input" class="form-input" placeholder="Brief note…" maxlength="120" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="task-start-input" class="form-label">Start</label>
+            <input type="time" id="task-start-input" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="task-end-input" class="form-label">End</label>
+            <input type="time" id="task-end-input" class="form-input" required />
+          </div>
+        </div>
+        <div class="task-modal__actions">
+          <button type="button" id="task-modal-delete" class="btn btn--danger-outline hidden">Delete</button>
+          <div class="task-modal__actions-right">
+            <button type="button" id="task-modal-cancel" class="btn btn--secondary">Cancel</button>
+            <button type="submit" id="task-modal-save" class="btn btn--primary">Add Task</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Settings Modal (Phase 6) ── -->
+  <div id="settings-modal" class="modal-backdrop hidden">
+    <div class="glass-card settings-card">
+      <button id="settings-close-btn" class="settings-card__close" aria-label="Close settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h2 class="settings-card__title">Settings</h2>
+
+      <!-- Tabs -->
+      <nav class="settings-tabs" aria-label="Settings sections">
+        <button class="settings-tab settings-tab--active" data-panel="panel-profile">Profile</button>
+        <button class="settings-tab" data-panel="panel-wallpaper">Wallpaper</button>
+        <button class="settings-tab" data-panel="panel-blocklist">Block List</button>
+        <button class="settings-tab" data-panel="panel-notifications">Notifications</button>
+      </nav>
+
+      <!-- Panel: Profile -->
+      <div id="panel-profile" class="settings-panel">
+        <div class="form-group">
+          <label for="settings-name" class="form-label">Your Name</label>
+          <div class="settings-inline-row">
+            <input type="text" id="settings-name" class="form-input" placeholder="Enter your name" />
+            <button id="settings-name-save" class="btn btn--primary btn--sm">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Wallpaper -->
+      <div id="panel-wallpaper" class="settings-panel hidden">
+        <div class="settings-wp-actions">
+          <button id="settings-wp-upload" class="btn btn--secondary">Upload New</button>
+          <input type="file" id="settings-wp-input" accept="image/*" class="sr-only" />
+          <button id="settings-wp-remove" class="btn btn--danger-outline">Remove</button>
+          <button id="settings-wp-restore" class="btn btn--secondary">Restore Default</button>
+        </div>
+      </div>
+
+      <!-- Panel: Block List -->
+      <div id="panel-blocklist" class="settings-panel hidden">
+        <div class="form-group">
+          <label for="settings-block-input" class="form-label">Add Website</label>
+          <div class="settings-inline-row">
+            <input type="text" id="settings-block-input" class="form-input" placeholder="Enter website URL" />
+            <button id="settings-block-add" class="btn btn--primary btn--sm">Add</button>
+          </div>
+        </div>
+        <div id="settings-block-list" class="block-list"></div>
+        <div class="settings-block-io">
+          <button id="settings-block-import" class="btn btn--secondary btn--sm">Import</button>
+          <input type="file" id="settings-block-file" accept=".json" class="sr-only" />
+          <button id="settings-block-export" class="btn btn--secondary btn--sm">Export</button>
+        </div>
+      </div>
+
+      <!-- Panel: Notifications -->
+      <div id="panel-notifications" class="settings-panel hidden">
+        <p class="form-label" style="margin-bottom: 12px;">Remind me before task ends:</p>
+        <div class="reminder-options">
+          <button class="reminder-option" data-minutes="2">2 min</button>
+          <button class="reminder-option" data-minutes="5">5 min</button>
+          <button class="reminder-option" data-minutes="10">10 min</button>
+          <button class="reminder-option" data-minutes="15">15 min</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/wallpaper.js"></script>
+  <script src="js/clock.js"></script>
+  <script src="js/greeting.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/focusmode.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

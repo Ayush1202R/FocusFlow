@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stay Focused — FocusFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/blocked.css" />
+</head>
+<body>
+
+  <div class="blocked-bg"></div>
+  <div class="blocked-overlay"></div>
+
+  <main class="blocked-container">
+
+    <div class="blocked-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+      </svg>
+    </div>
+
+    <h1 class="blocked-title">Stay Focused.</h1>
+
+    <div class="blocked-focus-card glass-card">
+      <span id="blocked-focus-label" class="blocked-focus-label">Active Task</span>
+      <p id="blocked-focus-text" class="blocked-focus-text">Loading…</p>
+    </div>
+
+    <div class="blocked-actions">
+      <button id="blocked-back-btn" class="btn btn--secondary-light">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Go Back
+      </button>
+      <a id="blocked-newtab-btn" href="newtab.html" target="_blank" class="btn btn--primary-light" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+        Open New Tab
+      </a>
+      <button id="blocked-disable-btn" class="btn btn--danger-light">
+        Disable Focus Mode
+      </button>
+    </div>
+
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/blocked.js"></script>
+</body>
+</html>
