@@ -1,5 +1,10 @@
 # FocusFlow — Distraction-Free Productivity Dashboard
 
+[![GitHub license](https://img.shields.io/github/license/Ayush1202R/FocusFlow?style=flat-square)](https://github.com/Ayush1202R/FocusFlow/blob/main/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/Ayush1202R/FocusFlow?style=flat-square)](https://github.com/Ayush1202R/FocusFlow/graphs/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/Ayush1202R/FocusFlow?style=flat-square)](https://github.com/Ayush1202R/FocusFlow/issues)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/Ayush1202R/FocusFlow/pulls)
+
 FocusFlow is a premium, glassmorphic Chrome Extension that replaces your default New Tab page with a beautiful, minimalist productivity dashboard. It helps you stay focused by tracking active study sessions, organizing tasks, and blocking distracting websites.
 
 ---
