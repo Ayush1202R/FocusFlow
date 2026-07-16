@@ -62,8 +62,7 @@ Morning prompt:
 
 > **What is your main focus today?**
 
-Behavior:
-
+`Focus.js` implements this flow:
 - Asked once each day
 - User enters one sentence
 - Stored with today's date
@@ -218,13 +217,10 @@ Sections:
 
 ### Block List
 
-Add website
-
-Remove website
-
-Import list
-
-Export list
+- Add website
+- Remove website
+- Import list
+- Export list
 
 ### Notifications
 
@@ -361,17 +357,12 @@ Future support:
 
 Theme:
 
-Minimal
-
-Glassmorphism cards
-
-Blur effects
-
-Responsive
-
-Large typography
-
-Readable on any wallpaper
+- Minimal
+- Glassmorphism cards
+- Blur effects
+- Responsive
+- Large typography
+- Readable on any wallpaper
 
 ---
 
@@ -515,3 +506,70 @@ Production-ready extension.
 - Wallpaper and user name are retained.
 - Dashboard remains functional offline.
 
+---
+
+# Extension Upgrades (Assignments 1–9)
+
+This section documents the requirements for adding the extension features from the assignment challenge document.
+
+## 1. Daily Motivational Quote (Assignment 1)
+* **What to build**: A short motivational quote displaying below the greeting/focus message on the center dashboard. A new quote rotates in each day. 
+* **Details**:
+  * Date-based indexing ensures the same quote displays for the entire day.
+  * Default list of 30-50 quotes provided automatically.
+  * A user-editable quotes manager added under a new "Quotes" settings tab where users can add custom quotes, delete existing ones, or restore defaults.
+
+## 2. Daily Focus Streak Counter (Assignment 2)
+* **What to build**: A small, visually attractive streak badge showing consecutive days a focus prompt has been completed.
+* **Details**:
+  * Increments only on new daily focus submission.
+  * Resets to 0 if a calendar day passes without setting a focus.
+  * Stores `longestStreak` ever achieved to display in Analytics.
+
+## 3. Dark Mode / Light Mode Toggle (Assignment 3)
+* **What to build**: A settings toggle that swaps the dashboard between a light theme and the default dark theme.
+* **Details**:
+  * Implemented using clean CSS variable overlays.
+  * Swapping changes card blurs, borders, text contrast, and panel backdrops without page reload.
+  * Theme preference persists in local storage.
+
+## 4. Pomodoro Timer Widget (Assignment 4)
+* **What to build**: A Pomodoro timer widget positioned on the left side of the dashboard.
+* **Details**:
+  * Focus sessions run for 25 minutes, followed by 5-minute break sessions (durations adjustable in Settings).
+  * System alerts trigger at the end of each session using Chrome Notifications and audio chimes.
+  * Timer counts down in the background even if the browser/tab is closed.
+
+## 5. Wallpaper Gallery & Rotation (Assignment 5)
+* **What to build**: Support for uploading and rotating multiple wallpapers.
+* **Details**:
+  * A thumbnail manager in Settings under "Wallpaper" with delete buttons.
+  * Rotation settings: "Rotate on new tab", "Rotate daily", "Rotate hourly", or "Static (no rotation)".
+  * Storage is capped at 8 uploads to protect local storage quota limits.
+
+## 6. Task Categories with Colored Tags (Assignment 6)
+* **What to build**: Categorization tags for tasks and filters to group lists.
+* **Details**:
+  * Choose preset categories (Work, Personal, Learning) or add custom categories with custom colors.
+  * Tasks display a small tag indicating their category.
+  * Filter chips (e.g. "All", "Work", "Personal") sit at the top of the Task panel to filter active lists.
+
+## 7. Focus Mode Schedule (Assignment 7)
+* **What to build**: Automated scheduling to auto-enable Focus Mode during set hours.
+* **Details**:
+  * Users can configure schedule blocks (e.g. 9:00 AM - 12:00 PM) in a new Settings panel.
+  * Alarm worker checks time ranges and toggles focus mode active.
+  * Manual override allows turning Focus Mode OFF during an active schedule block without auto-re-enabling it until the block ends.
+
+## 8. Daily Focus Time KPI (Assignment 8)
+* **What to build**: A dashboard KPI tracker showing total active Focus Mode time today.
+* **Details**:
+  * Located at the top center of the screen (e.g. "Focused: 2h 45m / 4h Goal").
+  * Increments every minute Focus Mode remains enabled and resets at midnight.
+
+## 9. Analytics Dashboard (Assignment 9)
+* **What to build**: Fullscreen dashboard overlay for usage logs and progress charts.
+* **Details**:
+  * Logs task completion counts, focus durations, and blocked domain visits.
+  * Displays graphs for the past 7 days, top blocked sites, and streak milestones.
+  * Built using custom responsive HTML, SVG, and CSS for offline extension support.

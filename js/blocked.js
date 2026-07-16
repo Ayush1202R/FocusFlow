@@ -5,6 +5,30 @@
 (async function () {
   'use strict';
 
+  // Log blocked attempt (Assignment 9)
+  try {
+    const originalUrl = window.location.hash.slice(1);
+    if (originalUrl) {
+      let domain = 'unknown';
+      try {
+        domain = new URL(originalUrl).hostname.replace('www.', '');
+      } catch (_) {
+        domain = originalUrl.replace('www.', '');
+      }
+
+      const today = new Date().toISOString().split('T')[0];
+      const LOGS_KEY = 'analyticsLogs';
+      const data = await Storage.get(LOGS_KEY);
+      const logs = data[LOGS_KEY] || {};
+      logs.blockedAttempts = logs.blockedAttempts || {};
+      logs.blockedAttempts[today] = logs.blockedAttempts[today] || {};
+      logs.blockedAttempts[today][domain] = (logs.blockedAttempts[today][domain] || 0) + 1;
+      await Storage.set({ [LOGS_KEY]: logs });
+    }
+  } catch (err) {
+    console.warn('Analytics: failed to log blocked site attempt', err);
+  }
+
   // 1. Bind event listeners
   
   // Go Back (Avoid Redirect Loops & Fallback to Dashboard)

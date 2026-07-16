@@ -23,9 +23,9 @@ const Wallpaper = (() => {
   /* ── Apply wallpaper from storage on page load ── */
   async function _loadFromStorage() {
     try {
-      const { wallpaper } = await Storage.get('wallpaper');
-      if (wallpaper) {
-        _applyToBackground(wallpaper);
+      const { settings } = await Storage.get('settings');
+      if (settings) {
+        await rotateWallpaper(settings);
       }
     } catch (err) {
       console.warn('Wallpaper: could not load from storage', err);
@@ -97,21 +97,101 @@ const Wallpaper = (() => {
     if (fileInput)        fileInput.value = '';
   }
 
-  /* ── Save pending wallpaper to storage ── */
+  /* ── Save pending wallpaper to storage (onboarding first launch) ── */
   async function savePending() {
     if (pendingDataUrl) {
-      await Storage.set({ wallpaper: pendingDataUrl });
-      _applyToBackground(pendingDataUrl);
+      try {
+        const { settings } = await Storage.get('settings');
+        const s = settings || {};
+        s.uploadedWallpapers = s.uploadedWallpapers || [];
+        s.uploadedWallpapers.push({
+          id: String(Date.now()),
+          dataUrl: pendingDataUrl
+        });
+        s.wallpaperMode = 'single';
+        s.currentWallpaperIndex = s.uploadedWallpapers.length - 1;
+        await Storage.set({ settings: s });
+        _applyToBackground(pendingDataUrl);
+      } catch (_) {}
       pendingDataUrl = null;
     }
   }
 
-  /* ── Remove wallpaper entirely (restore default gradient) ── */
-  async function remove() {
-    await Storage.remove('wallpaper');
-    pendingDataUrl = null;
-    _clearPreview();
-    layer.style.backgroundImage = '';
+  /* ── Rotate wallpaper based on mode ── */
+  async function rotateWallpaper(s) {
+    const mode = s.wallpaperMode || 'default';
+    const wallpapers = s.uploadedWallpapers || [];
+
+    if (mode === 'default' || wallpapers.length === 0) {
+      _clearBackground();
+      return;
+    }
+
+    if (mode === 'single') {
+      const idx = s.currentWallpaperIndex ?? 0;
+      const wp = wallpapers[idx] || wallpapers[0];
+      if (wp) _applyToBackground(wp.dataUrl);
+      return;
+    }
+
+    // Rotation modes
+    let curIndex = s.currentWallpaperIndex ?? 0;
+    if (curIndex >= wallpapers.length) curIndex = 0;
+
+    const now = Date.now();
+    const lastRotated = s.lastWallpaperChangeTime || 0;
+    let shouldRotate = false;
+
+    if (mode === 'newtab') {
+      shouldRotate = true;
+    } else if (mode === 'daily') {
+      const lastDate = new Date(lastRotated).toDateString();
+      const todayDate = new Date(now).toDateString();
+      if (lastDate !== todayDate) {
+        shouldRotate = true;
+      }
+    } else if (mode === 'hourly') {
+      if (now - lastRotated >= 3600000) {
+        shouldRotate = true;
+      }
+    }
+
+    if (shouldRotate && wallpapers.length > 1) {
+      curIndex = (curIndex + 1) % wallpapers.length;
+      s.currentWallpaperIndex = curIndex;
+      s.lastWallpaperChangeTime = now;
+      await Storage.set({ settings: s });
+    }
+
+    const wp = wallpapers[curIndex] || wallpapers[0];
+    if (wp) {
+      _applyToBackground(wp.dataUrl);
+    }
+  }
+
+  /* ── Set active wallpaper manually ── */
+  async function applyActiveWallpaper() {
+    const { settings } = await Storage.get('settings');
+    if (settings) {
+      const wallpapers = settings.uploadedWallpapers || [];
+      const idx = settings.currentWallpaperIndex ?? 0;
+      const wp = wallpapers[idx];
+      if (wp && settings.wallpaperMode !== 'default') {
+        _applyToBackground(wp.dataUrl);
+      } else {
+        _clearBackground();
+      }
+    }
+  }
+
+  /* ── Update mode and re-trigger ── */
+  async function updateRotationMode(mode) {
+    const { settings } = await Storage.get('settings');
+    if (settings) {
+      settings.wallpaperMode = mode;
+      await Storage.set({ settings });
+      await rotateWallpaper(settings);
+    }
   }
 
   /* ── Apply a data URL to the background layer ── */
@@ -120,5 +200,9 @@ const Wallpaper = (() => {
     layer.style.backgroundImage = `url('${dataUrl}')`;
   }
 
-  return { init, savePending, remove };
+  function _clearBackground() {
+    if (layer) layer.style.backgroundImage = '';
+  }
+
+  return { init, savePending, applyActiveWallpaper, updateRotationMode };
 })();

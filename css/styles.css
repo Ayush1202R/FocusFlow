@@ -45,6 +45,27 @@
   --glass-border:  1px solid rgba(255, 255, 255, 0.10);
 }
 
+/* ── Light Theme Overrides ── */
+.light-theme {
+  --color-bg-dark:       #f5f5f7;
+  --color-surface:       rgba(0, 0, 0, 0.05);
+  --color-surface-hover: rgba(0, 0, 0, 0.08);
+  --color-surface-solid: rgba(240, 240, 245, 0.95);
+  --color-border:        rgba(0, 0, 0, 0.08);
+  --color-border-focus:  rgba(0, 0, 0, 0.20);
+
+  --color-text-primary:   #1d1d1f;
+  --color-text-secondary: #515154;
+  --color-text-muted:     #86868b;
+
+  --glass-bg:      rgba(255, 255, 255, 0.65);
+  --glass-border:  1px solid rgba(0, 0, 0, 0.08);
+
+  --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-glow:     0 0 40px rgba(108, 99, 255, 0.08);
+}
+
+
 /* ── Reset ── */
 *,
 *::before,
@@ -928,6 +949,252 @@ body {
 }
 
 /* ============================================================
+   DAILY FOCUS (Phase 2)
+   ============================================================ */
+.focus-section {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.8s var(--ease-out-expo);
+}
+
+.focus-prompt__label {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+}
+
+.focus-prompt__input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 6px 6px 6px 16px;
+  width: min(440px, 90vw);
+  box-shadow: var(--shadow-elevated);
+}
+
+.focus-prompt__input {
+  background: transparent !important;
+  border: none !important;
+  padding: 8px 0 !important;
+  outline: none;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  flex-grow: 1;
+}
+
+.focus-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.focus-display__label {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+.focus-display__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.focus-display__text {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+.focus-display__edit {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  opacity: 0.6;
+  transition: opacity var(--transition-base), color var(--transition-base);
+}
+
+.focus-display__edit:hover {
+  opacity: 1;
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
+   DAILY FOCUS STREAK COUNTER (Assignment 2)
+   ============================================================ */
+.streak-counter {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 82, 82, 0.12);
+  border: 1px solid rgba(255, 82, 82, 0.25);
+  padding: 6px 14px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  box-shadow: 0 0 15px rgba(255, 82, 82, 0.1);
+  animation: scaleIn 0.5s var(--ease-out-expo);
+}
+
+.streak-fire-icon {
+  animation: pulse 1.5s infinite alternate;
+}
+
+/* ============================================================
+   DAILY MOTIVATIONAL QUOTE (Assignment 1)
+   ============================================================ */
+.quote-container {
+  margin-top: 36px;
+  text-align: center;
+  max-width: 500px;
+  padding: 0 20px;
+  animation: fadeIn 1s var(--ease-out-expo);
+}
+
+.quote-text {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+  font-weight: 300;
+}
+
+.quote-author {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* ============================================================
+   DAILY FOCUS TIME KPI (Assignment 8)
+   ============================================================ */
+.focus-kpi {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-elevated);
+}
+
+.focus-kpi__icon {
+  font-size: 1rem;
+}
+
+.focus-kpi__goal {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+
+
+/* ============================================================
+   POMODORO TIMER WIDGET (Assignment 4)
+   ============================================================ */
+.pomodoro-panel {
+  position: fixed;
+  top: 50%;
+  left: 28px;
+  transform: translateY(-50%);
+  z-index: 50;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+  border-radius: var(--radius-xl);
+  animation: slideInLeft 0.7s var(--ease-out-expo);
+}
+
+.pomodoro-timer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.pomodoro-timer__title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.pomodoro-timer__phase {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent-end);
+  background: rgba(224, 64, 251, 0.15);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.pomodoro-timer__display-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0 24px;
+}
+
+.pomodoro-timer__display {
+  font-family: var(--font-display);
+  font-size: 3.6rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-shadow: 0 0 30px rgba(108, 99, 255, 0.25);
+  letter-spacing: -0.02em;
+}
+
+.pomodoro-timer__controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.pomodoro-timer__btn {
+  flex: 1;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translate(-30px, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+/* ============================================================
    TASK MANAGER (Phase 3)
    ============================================================ */
 
@@ -1030,6 +1297,61 @@ body {
 .task-list::-webkit-scrollbar-thumb {
   background: var(--color-border);
   border-radius: 2px;
+}
+
+/* ── Category Filter Chips ── */
+.task-filter-chips {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.task-filter-chips::-webkit-scrollbar {
+  height: 4px;
+}
+
+.task-filter-chips::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+.filter-chip {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-base);
+}
+
+.filter-chip:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.filter-chip--active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+}
+
+/* ── Task Category Tags ── */
+.task-item__category-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  margin-top: 4px;
+  width: max-content;
 }
 
 /* ── Individual Task Item ── */
@@ -1453,6 +1775,16 @@ input[type="time"].form-input {
     animation: fadeInUp 0.6s var(--ease-out-expo);
   }
 
+  .pomodoro-panel {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    margin-top: 24px;
+    animation: fadeInUp 0.6s var(--ease-out-expo);
+  }
+
   .task-modal-card {
     padding: 28px 20px;
   }
@@ -1484,3 +1816,353 @@ input[type="time"].form-input {
     font-size: 0.8rem;
   }
 }
+
+/* ── Theme Toggle Switch ── */
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.switch-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: var(--color-surface-hover);
+  transition: .4s;
+  border-radius: 24px;
+  border: 1px solid var(--color-border);
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--color-text-primary);
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.switch-toggle input:checked + .switch-slider {
+  background-color: var(--color-accent);
+}
+
+.switch-toggle input:checked + .switch-slider:before {
+  transform: translateX(22px);
+}
+
+/* ── Wallpaper Gallery thumbnails ── */
+.wp-gallery__item {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+
+.wp-gallery__item:hover {
+  border-color: var(--color-accent);
+  transform: scale(1.02);
+}
+
+.wp-gallery__item--active {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+.wp-gallery__delete {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 82, 82, 0.9);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.wp-gallery__item:hover .wp-gallery__delete {
+  opacity: 1;
+}
+
+.wp-gallery__delete svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* ============================================================
+   ANALYTICS SCREEN (Assignment 9)
+   ============================================================ */
+.analytics-card-fullscreen {
+  width: min(840px, 95vw);
+  height: min(600px, 85vh);
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: scaleIn 0.5s var(--ease-out-expo);
+  box-shadow: var(--shadow-elevated), var(--shadow-glow);
+}
+
+.analytics-card__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.analytics-card__close:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.analytics-card__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+.analytics-card__subtitle {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.analytics-grid::-webkit-scrollbar {
+  width: 4px;
+}
+
+.analytics-grid::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.analytics-sub-card {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
+  border-radius: var(--radius-lg) !important;
+}
+
+.analytics-sub-card__title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+
+.streak-metrics {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-grow: 1;
+}
+
+.streak-metric-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.streak-metric-item__val {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-accent-start);
+  text-shadow: 0 0 25px rgba(108, 99, 255, 0.2);
+}
+
+.streak-metric-item__lbl {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* Custom CSS/HTML Bar Charts */
+.bar-chart-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding-top: 14px;
+  padding-bottom: 4px;
+  height: 100%;
+}
+
+.bar-chart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.bar-chart-bar-wrapper {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.bar-chart-bar {
+  width: 24px;
+  background: linear-gradient(to top, var(--color-accent-start), var(--color-accent-end));
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  min-height: 2px;
+  cursor: pointer;
+}
+
+.bar-chart-bar:hover {
+  filter: brightness(1.15);
+}
+
+.bar-chart-value {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--color-border);
+}
+
+.bar-chart-bar:hover .bar-chart-value {
+  opacity: 1;
+}
+
+.bar-chart-label {
+  font-size: 0.65rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Blocked Site Attempts List */
+.blocked-attempts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex-grow: 1;
+  max-height: 140px;
+  padding-right: 4px;
+}
+
+.blocked-attempts-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.blocked-attempts-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.blocked-attempts-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.blocked-attempts-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-family: var(--font-body);
+}
+
+.blocked-attempts-domain {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.blocked-attempts-count {
+  color: var(--color-text-secondary);
+}
+
+.blocked-attempts-progress-bar {
+  height: 6px;
+  background: var(--color-surface);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.blocked-attempts-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--color-danger), #ff8a80);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.6s var(--ease-out-expo);
+}
+
+@media (max-width: 600px) {
+  .analytics-card-fullscreen {
+    padding: 24px;
+    height: 90vh;
+  }
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+

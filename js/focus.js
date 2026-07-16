@@ -19,6 +19,15 @@ const Focus = (() => {
     return `${y}-${m}-${d}`;
   }
 
+  function _yesterdayKey() {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const y = yesterday.getFullYear();
+    const m = String(yesterday.getMonth() + 1).padStart(2, '0');
+    const d = String(yesterday.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
   /* ── Initialise ── */
   async function init() {
     // Grab DOM refs
@@ -70,10 +79,52 @@ const Focus = (() => {
         // No focus yet or it's a new day → show prompt
         _showPrompt();
       }
+
+      await _checkAndRenderStreak();
     } catch (err) {
       console.warn('Focus: could not load from storage', err);
       _showPrompt();
     }
+  }
+
+  /* ── Check & Render Daily Focus Streak (Assignment 2) ── */
+  async function _checkAndRenderStreak() {
+    const { focusStreak, longestStreak, lastFocusDate } = await Storage.get(['focusStreak', 'longestStreak', 'lastFocusDate']);
+    const streakEl = document.getElementById('streak-counter');
+    const countEl = document.getElementById('streak-count');
+    if (!streakEl || !countEl) return;
+
+    let streak = focusStreak || 0;
+    let lastDate = lastFocusDate || '';
+
+    if (lastDate) {
+      const today = _todayKey();
+      const diffDays = _calcDiffDays(lastDate, today);
+      if (diffDays > 1) {
+        // Skipped a day → reset streak to 0
+        streak = 0;
+        await Storage.set({ focusStreak: 0 });
+      }
+    } else {
+      streak = 0;
+    }
+
+    if (streak > 0) {
+      countEl.textContent = streak;
+      streakEl.classList.remove('hidden');
+    } else {
+      streakEl.classList.add('hidden');
+    }
+  }
+
+  function _calcDiffDays(dateStr1, dateStr2) {
+    const d1 = new Date(dateStr1);
+    const d2 = new Date(dateStr2);
+    d1.setHours(0,0,0,0);
+    d2.setHours(0,0,0,0);
+    const diffTime = Math.abs(d2 - d1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
   }
 
   /* ── Handle focus submission ── */
@@ -81,14 +132,41 @@ const Focus = (() => {
     const text = focusInput.value.trim();
     if (!text) return;
 
+    const today = _todayKey();
     const focusData = {
-      date: _todayKey(),
+      date: today,
       text: text,
     };
 
     try {
       await Storage.set({ dailyFocus: focusData });
+
+      // Update streak
+      const { focusStreak, longestStreak, lastFocusDate } = await Storage.get(['focusStreak', 'longestStreak', 'lastFocusDate']);
+      let streak = focusStreak || 0;
+      let longest = longestStreak || 0;
+      const lastDate = lastFocusDate || '';
+
+      if (lastDate === today) {
+        // Already set today, no change
+      } else if (lastDate === _yesterdayKey()) {
+        streak++;
+      } else {
+        streak = 1;
+      }
+
+      if (streak > longest) {
+        longest = streak;
+      }
+
+      await Storage.set({
+        focusStreak: streak,
+        longestStreak: longest,
+        lastFocusDate: today
+      });
+
       _showDisplay(text);
+      await _checkAndRenderStreak();
     } catch (err) {
       console.error('Focus: failed to save', err);
     }

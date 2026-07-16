@@ -15,6 +15,14 @@
   Wallpaper.init();
   Clock.init();
 
+  // ── Apply theme on boot ──
+  try {
+    const data = await Storage.get('settings');
+    if (data.settings && data.settings.theme === 'light') {
+      document.body.classList.add('light-theme');
+    }
+  } catch (_) {}
+
   // ── Ensure default settings are initialized ──
   try {
     const { settings } = await Storage.get('settings');
@@ -121,11 +129,15 @@
     onboardingModal.classList.add('hidden');
     dashboard.classList.remove('hidden');
     Greeting.render(name);
+    Focus.init();       // Daily Focus Prompt & Streak
+    Quotes.init();      // Daily Motivational Quote (Assignment 1)
     Timer.init();       // Phase 8: Study stopwatch timer & queue
     TaskManager.init(); // Phase 3: Task manager panel
     Notifications.init(); // Phase 4: In-tab reminder banner
     FocusMode.init();   // Phase 5: Focus mode switch
     Settings.init();    // Phase 6: Tabbed settings panel
+    Pomodoro.init();    // Pomodoro Timer Panel (Assignment 4)
+    Analytics.init();   // Analytics Dashboard (Assignment 9)
   }
 
 })();
